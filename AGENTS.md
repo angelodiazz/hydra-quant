@@ -31,6 +31,26 @@ Before equivalent comparison tasks, both agent branches must start from the same
 
 Do not compare implementations created from different approved baselines unless Angelo explicitly authorizes it.
 
+## Agent-Specific Instructions
+
+All agents must follow this `AGENTS.md` file.
+
+Before beginning project work:
+
+* Codex must also read `CODEX.md`.
+* Claude Code must also read `CLAUDE.md`.
+
+Agent-specific instruction files may add stricter requirements, but they may not weaken or override the shared rules in `AGENTS.md`.
+
+Before performing any project work, Codex must open `CODEX.md` and confirm:
+
+* its assigned worktree;
+* its expected branch;
+* the protected worktrees;
+* the Git actions requiring approval.
+
+If `CODEX.md` is missing or cannot be read, Codex must stop and notify Angelo.
+
 ## Protected Main Branch
 
 The `main` branch represents the approved version of Hydra-Quant.
@@ -46,7 +66,7 @@ Agents must not:
 * force-push;
 * delete branches or worktrees.
 
-Agents must not modify `AGENTS.md`, `CLAUDE.md`, agent configuration files, or repository governance rules without explicit approval.
+Agents must not modify `AGENTS.md`, `CODEX.md`, `CLAUDE.md`, `docs/DEVELOPMENT.md`, agent configuration files, or repository governance rules without explicit approval.
 
 Only Angelo may approve changes entering `main`.
 
