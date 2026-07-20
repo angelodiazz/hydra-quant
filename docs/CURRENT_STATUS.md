@@ -1,8 +1,8 @@
-# Hydra-Quant Current Status — July 18, 2026
+# Hydra-Quant Current Status — July 20, 2026
 
 ## Document Purpose
 
-This document records the verified implementation and project-operations status of Hydra-Quant as of July 18, 2026.
+This document records the verified implementation and project-operations status of Hydra-Quant as of July 20, 2026.
 
 It identifies:
 
@@ -469,11 +469,19 @@ Records 20 accepted decisions, 25 unresolved decision topics, excluded direction
 
 This file completes the six-file shared documentation set.
 
-### Documentation commit status
+### Documentation commit and remote status
 
-**Status: Not yet completed**
+**Status: Complete**
 
-The sharedn files before the documentation commit are:
+The six-file shared platform-documentation foundation was committed in:
+
+```text
+a3f1d2b docs: establish Hydra-Quant platform blueprint
+```
+
+The trusted `main` branch was pushed successfully to `origin/main`.
+
+The public GitHub repository was verified to contain:
 
 ```text
 README.md
@@ -484,7 +492,7 @@ docs/DECISIONS.md
 docs/ROADMAP.md
 ```
 
-The exact `git status --short` output must be verified after this file is saved.
+The repository commit history, shared governance files, build configuration, source structure, and documentation links were inspected through GitHub.
 
 ## Coding-Agent Environment
 
@@ -874,11 +882,10 @@ The following limitations are verified and must remain visible.
 ### Workflow limitations
 
 * Claude Code setup is incomplete;
-* `CLAUDE.md` does not exist;
-* shared documentation has not yet been committed;
-* shared documentation has not yet been pushed;
-* remote repository synchronization must be reverified;
-* the complete documentation set has not yet been checked as one change.
+* `CLAUDE.md` does not yet exist;
+* the Claude worktree and `agent/claude` branch have not yet been created;
+* the Codex branch must be synchronized with the latest approved `main` baseline;
+* parallel-agent isolation has not yet been verified with both agents configured.
 
 ## Known Issues and Cleanup Items
 
@@ -910,143 +917,89 @@ The current Makefile is sufficient for the scaffold.
 
 It may require extension or replacement when tests, multiple targets, dependencies, sanitizers, and benchmarks are added.
 
-### Documentation not yet committed
+### Documentation synchronization
 
-The shared documentation exists only as local untracked work until it is added and committed.
+The shared platform documentation has been reviewed, committed, pushed, and verified on GitHub.
 
-A VM shutdown preserves the files but does not create Git history or remote backup.
+Future status changes must be recorded when Claude Code setup is completed, the agent worktrees are synchronized, or R1 begins.
 
 ## Immediate Next Actions
 
-Perform the following remaining actions in order.
+Perform the following remaining R0 actions in order.
 
-### 1. Verify repository identity
+### 1. Create and review Claude Code instructions
 
-```bash
-cd ~/projects/hydra-core
-pwd
-git branch --show-current
-git status --short
-```
+Draft the initial `CLAUDE.md` using the established shared governance documents, agent restrictions, and parallel-agent architecture.
 
-### 2. Verify the final file
+Review the file before adding it to the trusted repository.
 
-```bash
-head -n 30 docs/CURRENT_STATUS.md
-tail -n 30 docs/CURRENT_STATUS.md
-git diff --no-index --check /dev/null docs/CURRENT_STATUS.md
-```
+### 2. Commit and push `CLAUDE.md`
 
-### 3. Verify all shared documents
-
-Check:
-
-* titles;
-* heading hierarchy;
-* status terminology;
-* cross-document responsibilities;
-* relative links;
-* corrupted paste fragments;
-* trailing whitespace;
-* contradictory implementation claims.
-
-### 4. Inspect repository changes
+After review:
 
 ```bash
-git status --short
-git diff --stat
-```
-
-Because the shared files are untracked, use appropriate new-file diff commands or add them only after review.
-
-### 5. Build the current project
-
-```bash
-make clean
-make
-./main
-```
-
-The current diagnostic output must not be interpreted as proof of unimplemented subsystems.
-
-### 6. Review the documentation set
-
-Review these files together:
-
-```text
-README.md
-docs/BLUEPRINT.md
-docs/ARCHITECTURE.md
-docs/ROADMAP.md
-docs/DECISIONS.md
-docs/CURRENT_STATUS.md
-```
-
-### 7. Add only approved files
-
-After verification:
-
-```bash
-git add README.md \
-    docs/BLUEPRINT.md \
-    docs/ARCHITECTURE.md \
-    docs/ROADMAP.md \
-    docs/DECISIONS.md \
-    docs/CURRENT_STATUS.md
-```
-
-### 8. Inspect the staged change
-
-```bash
-git status --short
-git diff --cached --stat
+git add CLAUDE.md
+git diff --cached
 git diff --cached --check
-```
-
-The staged change must not include unintended source, build, environment, or secret files.
-
-### 9. Create an intentional commit
-
-The commit message should describe the documentation foundation accurately.
-
-Example:
-
-```bash
-git commit -m "docs: establish Hydra-Quant platform blueprint"
-```
-
-### 10. Push the trusted branch
-
-After confirming local history and remote status:
-
-```bash
+git commit -m "docs: add Claude Code operating instructions"
 git push origin main
 ```
 
-### 11. Verify GitHub
+### 3. Install and authenticate Claude Code
 
-Confirm that the public repository displays:
+Install Claude Code inside the Ubuntu VM and complete authentication using Angelo's approved account.
 
-* the approved README;
-* all five `docs/` shared platform files;
-* correct relative links;
-* correct Markdown rendering;
-* no accidental files;
-* no unsupported implementation claims.
+Do not grant unnecessary permissions or enable unrestricted network or filesystem access.
 
-### 12. Complete remaining R0 setup
+### 4. Configure Claude Code safely
 
-After documentation verification:
+Configure Claude Code so that it:
 
-* install and configure Claude Code;
-* create the Claude worktree and branch;
-* create `CLAUDE.md`;
-* verify agent isolation;
-* update this status document when the setup is complete.
+* works only inside its assigned worktree;
+* does not modify the trusted `hydra-core` worktree;
+* does not switch to or work directly on `main`;
+* does not install dependencies without approval;
+* does not perform Git governance operations without approval;
+* follows `AGENTS.md`, `CLAUDE.md`, and the shared project documentation.
 
-### 13. Begin R1
+### 5. Create the Claude worktree and branch
 
-The first functional milestone work should begin with:
+Create the isolated Claude worktree at:
+
+```text
+/home/angelo/projects/hydra-claude
+```
+
+Use the dedicated branch:
+
+```text
+agent/claude
+```
+
+### 6. Synchronize the agent branches
+
+Ensure the Codex and Claude branches both begin from the latest approved `main` commit before equivalent work is assigned.
+
+### 7. Verify parallel-agent isolation
+
+Confirm that:
+
+* Codex works only inside `hydra-codex`;
+* Claude works only inside `hydra-claude`;
+* neither agent modifies `hydra-core`;
+* neither agent works directly on `main`;
+* the agents cannot overwrite each other's worktrees;
+* Angelo retains control of review, commits, pushes, merges, and integration.
+
+### 8. Update project status
+
+Update `docs/CURRENT_STATUS.md` after Claude Code, the Claude worktree, branch synchronization, and agent isolation have been verified.
+
+Confirm every R0 exit criterion before marking R0 complete.
+
+### 9. Begin R1
+
+After R0 is complete, begin the first functional milestone with:
 
 * test-framework evaluation;
 * build-and-test integration;
@@ -1056,18 +1009,25 @@ The first functional milestone work should begin with:
 
 ## Checkpoint Completion Criteria
 
-This July 18, 2026 checkpoint is considered fully recorded when:
+This July 20, 2026 checkpoint is considered fully recorded because:
 
 * this file exists;
 * its facts match the trusted repository;
-* all six shared documents pass formatting checks;
-* no file claims unimplemented capability;
-* all documentation links are valid or intentionally reference documents in the same pending set;
-* the documentation change is committed;
-* the trusted branch is pushed;
-* the public repository is verified.
+* all six shared documents passed formatting and structural checks;
+* implemented and planned capabilities are clearly distinguished;
+* documentation links were verified;
+* the documentation change was committed;
+* the trusted `main` branch was pushed;
+* the public GitHub repository was verified.
 
-Until those actions are complete, R0 remains **In progress**.
+R0 remains **In progress** until:
+
+* `CLAUDE.md` is created, reviewed, committed, and pushed;
+* Claude Code is installed, authenticated, and safely configured;
+* the `hydra-claude` worktree and `agent/claude` branch are created;
+* the Codex and Claude branches begin from the same approved `main` baseline;
+* parallel-agent isolation is verified;
+* the final R0 status update is completed.
 
 ## Status Update Rules
 

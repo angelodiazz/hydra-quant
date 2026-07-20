@@ -83,16 +83,9 @@ The trusted implementation remains a minimal C++20 command-line foundation.
 
 Major trading-platform functionality is **Not yet implemented**.
 
-The immediate documentation sequence is:
+The six-file shared documentation foundation is complete, committed, pushed, and verified on GitHub.
 
-1. `README.md`
-2. `docs/BLUEPRINT.md`
-3. `docs/ARCHITECTURE.md`
-4. `docs/ROADMAP.md`
-5. `docs/DECISIONS.md`
-6. `docs/CURRENT_STATUS.md`
-
-After all six shared documents are reviewed, they should be verified together, committed intentionally, and pushed from the trusted `main` worktree.
+R0 remains in progress because Claude Code setup, `CLAUDE.md`, the Claude worktree, agent-branch synchronization, and final parallel-agent isolation verification remain incomplete.
 
 ## Roadmap Principles
 
@@ -239,17 +232,16 @@ The current project foundation includes:
 
 ### Remaining core deliverables
 
-* complete the six shared project documents;
-* verify cross-document consistency;
-* verify all relative links;
-* check Markdown formatting and whitespace;
-* create `CLAUDE.md` during Claude Code setup;
-* complete Claude Code installation and worktree configuration;
-* review repository status;
-* add documentation intentionally;
-* create a clear documentation commit;
-* push the trusted `main` branch;
-* verify that GitHub reflects the approved documentation.
+* create and verify `CLAUDE.md`;
+* commit and push the Claude Code instructions;
+* install and authenticate Claude Code inside the Ubuntu VM;
+* configure Claude Code permissions and safety boundaries;
+* create the `hydra-claude` worktree on `agent/claude`;
+* synchronize the Codex and Claude branches from the latest approved `main` commit;
+* verify both agents remain isolated from `hydra-core` and from each other;
+* update `CURRENT_STATUS.md` after Claude setup is complete;
+* confirm all R0 exit criteria;
+* mark R0 completed.
 
 ### Exit criteria
 
@@ -259,11 +251,15 @@ R0 is completed when:
 * document responsibilities do not overlap incorrectly;
 * implemented and planned functionality are clearly distinguished;
 * governance documents remain unchanged unless intentionally updated;
+* the documentation has been reviewed, committed, pushed, and verified;
+* the public repository accurately describes the project;
+* `CLAUDE.md` exists and has been reviewed;
+* Claude Code is installed, authenticated, and safely configured;
+* the Claude worktree and `agent/claude` branch exist;
+* the Codex and Claude branches begin from the same approved baseline;
+* agent isolation has been verified;
 * the current project builds successfully;
-* the trusted worktree contains no unintended files;
-* documentation has been committed intentionally;
-* the trusted branch has been pushed successfully;
-* the public repository accurately describes the project.
+* the trusted worktree contains no unintended files.
 
 ### Deferred from R0
 
@@ -348,7 +344,9 @@ Tests should verify selected invariants such as:
 * preserve a reproducible clean build;
 * provide separate build and test commands;
 * avoid committing generated build artifacts;
-* preserve warning-as-error behaviorteria
+* preserve warning-as-error behavior.
+
+### Exit criteria
 
 R1 is completed when:
 
@@ -358,8 +356,6 @@ R1 is completed when:
 * the runtime build still succeeds;
 * tests do not depend on real current time;
 * no unsupported performance claims are added;
-* relevant decisions are recorded;
-* documentation reflects the verified implementation.
 
 ### Stretch deliverables
 

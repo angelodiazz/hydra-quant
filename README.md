@@ -9,7 +9,7 @@ Hydra-Quant is not presented as a profitable trading system. It is a systems-eng
 ## Current Status
 
 * **Project phase:** Foundation development
-* **Checkpoint:** July 18, 2026
+* **Checkpoint:** July 20, 2026
 * **Primary language:** C++20
 * **Primary development environment:** Ubuntu Linux
 * **Repository:** `angelodiazz/hydra-quant`
@@ -312,7 +312,7 @@ Hydra-Quant uses shared, agent-neutral documentation for project direction and a
 | [`CODEX.md`](CODEX.md)                             | Codex-specific operating instructions                                 |
 | `CLAUDE.md`                                        | Planned Claude Code-specific instructions                             |
 
-At the July 18, 2026 checkpoint, the shared blueprint, architecture, roadmap, decision log, and current-status documents are being created. Links become active as each file is added to the repository.
+At the July 20, 2026 checkpoint, the shared blueprint, architecture, roadmap, decision log, and current-status documents are complete, committed, pushed, and available through the links above. Claude Code setup and `CLAUDE.md` remain pending.
 
 Repository governance files take precedence over abbreviated workflow descriptions in this README.
 
