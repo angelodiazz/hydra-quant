@@ -72,7 +72,7 @@ This document also uses the following operational labels:
 
 ## Checkpoint Summary
 
-* **Checkpoint date:** July 18, 2026
+* **Checkpoint date:** July 20, 2026
 * **Project phase:** Foundation development
 * **Roadmap milestone:** R0 — Project and Documentation Foundation
 * **R0 delivery status:** In progress
@@ -150,9 +150,7 @@ Claude Code setup is not yet complete.
 * **Repository:** `angelodiazz/hydra-quant`
 * **Default trusted branch:** `main`
 
-The public repository exists and has previously been verified.
-
-Remote synchronization must be checked again after the documentation foundation is committed and pushed.
+The public repository exists and was verified after commit `dfd4cc3` was pushed to `origin/main`.
 
 ### Trusted local worktree
 
@@ -681,33 +679,34 @@ input
 
 ### Remaining R0 work
 
-* verify all six shared files together;
-* check all Markdown whitespace;
-* check document heading hierarchy;
-* check cross-document links;
-* inspect complete documentation diffs;
-* rebuild the current project;
-* confirm no unintended repository changes;
-* add the six shared documents;
-* create an intentional documentation commit;
-* push the trusted `main` branch;
-verify the files on GitHub;
-* complete Claude Code setup;
-* create `CLAUDE.md`.
+* create and verify `CLAUDE.md`;
+* commit and push the Claude Code instructions;
+* install and authenticate Claude Code inside the Ubuntu VM;
+* configure Claude Code permissions and safety boundaries;
+* create the `hydra-claude` worktree on `agent/claude`;
+* synchronize the Codex and Claude branches from the latest approved `main` commit;
+* verify both agents remain isolated from `hydra-core` and from each other;
+* update `CURRENT_STATUS.md` after Claude setup is complete;
+* confirm all R0 exit criteria;
+* mark R0 completed.
 
 ### R0 completion condition
 
 R0 remains in progress until:
 
-* documentation is verified as a set;
-* the project build succeeds;
-* the documentation commit is created;
-* the trusted branch is pushed;
-* the public repository is verified;
-* no unintended files are included;
-* Claude Code installation and authentication are complete;
-* the Claude worktree and branch are verified;
-* `CLAUDE.md` exists and is verified.
+* all six shared project documents exist;
+* document responsibilities do not overlap incorrectly;
+* implemented and planned functionality are clearly distinguished;
+* governance documents remain unchanged unless intentionally updated;
+* the documentation has been reviewed, committed, pushed, and verified;
+* the public repository accurately describes the project;
+* `CLAUDE.md` exists and has been reviewed;
+* Claude Code is installed, authenticated, and safely configured;
+* the Claude worktree and `agent/claude` branch exist;
+* the Codex and Claude branches begin from the same approved baseline;
+* agent isolation has been verified;
+* the current project builds successfully;
+* the trusted worktree contains no unintended files.
 
 ### R1 — Verification and Domain Foundation
 

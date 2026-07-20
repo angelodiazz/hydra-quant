@@ -36,7 +36,7 @@ A capability is not considered implemented unless the trusted repository and [`C
 
 ## Current Foundation
 
-As of July 18, 2026, Hydra-Quant is in foundation development.
+As of July 20, 2026, Hydra-Quant is in foundation development.
 
 The trusted project currently includes:
 

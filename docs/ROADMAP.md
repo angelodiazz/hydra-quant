@@ -356,6 +356,8 @@ R1 is completed when:
 * the runtime build still succeeds;
 * tests do not depend on real current time;
 * no unsupported performance claims are added;
+* relevant decisions are recorded;
+* documentation reflects the verified implementation.
 
 ### Stretch deliverables
 
