@@ -270,7 +270,13 @@ The platform should accept supported historical or generated market data from lo
 
 The initial ingestion format should favor simplicity and inspectability. CSV is the expected first format, subject to confirmation in [`DECISIONS.md`](DECISIONS.md).
 
+Supported local ingestion must process records incrementally with bounded working memory. It must not require loading the complete dataset into memory.
+
+Straightforward buffered sequential reads are the expected initial approach. Memory-mapped file access remains **Under evaluation** and requires a recorded decision before becoming a governing implementation direction.
+
 The ingestion path should:
+
+* process supported records incrementally;
 
 * parse supported records;
 * validate required fields;
@@ -278,6 +284,16 @@ The ingestion path should:
 * preserve source ordering where required;
 * report errors with useful context;
 * avoid hidden or partial state corruption.
+
+#### Optional future binary adapter
+
+**Status: Proposed**
+
+After deterministic local ingestion and replay are stable, Hydra-Quant may add one offline binary market-data adapter beneath the existing validation and normalization boundary.
+
+Candidate formats and the exact adapter scope remain **Under evaluation**. The selected source must use permitted or project-generated data and preserve deterministic replay, malformed-input handling, and source-independent domain behavior.
+
+Live multicast, packet-recovery behavior, and production exchange-feed connectivity are not required by the current roadmap.
 
 ### Market-data normalization
 
@@ -510,6 +526,10 @@ Focused benchmarks may be introduced for:
 * allocation behavior.
 
 Benchmarks must remain separate from correctness tests.
+
+Benchmark timing must not mandate a single timing source. Initial measurements may use a documented monotonic clock or a disciplined benchmark framework. Hardware performance counters and serialized Time Stamp Counter measurements may be evaluated later where supported and justified.
+
+Raw `__rdtsc()` calls are not a complete benchmark methodology. Every selected timing approach must document its resolution, ordering requirements, timer-read overhead, hardware environment, and known limitations.
 
 ## Major Subsystems
 
@@ -757,6 +777,7 @@ Concurrency may be introduced only when:
 * backpressure behavior is defined;
 * deterministic testing remains possible;
 * race detection or equivalent verification is available;
+* any approved concurrent queue separates producer-owned and consumer-owned synchronization metadata to reduce false sharing and verifies the resulting layout;
 * the change provides a measured benefit.
 
 Possible future concurrency boundaries include:
@@ -771,6 +792,8 @@ Possible future concurrency boundaries include:
 These boundaries are **Proposed**.
 
 Thread count, queue design, CPU affinity, scheduling, lock-free structures, and memory-ordering policy remain unresolved.
+
+For a future concurrent queue, `std::hardware_destructive_interference_size` should be used where supported, or the implementation must provide a documented platform-specific fallback. The exact queue layout remains **Under evaluation**.
 
 ## Error-Handling Philosophy
 

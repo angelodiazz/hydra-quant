@@ -404,6 +404,8 @@ supported local source
 * document the supported schema;
 * provide a small permitted sample or generated fixture;
 * open and read the input predictably;
+* process records incrementally with bounded working memory;
+* avoid requiring the complete dataset to be loaded into memory;
 * report inaccessible input clearly.
 
 CSV is the expected first candidate, subject to a recorded decision.
@@ -481,6 +483,7 @@ R2 is completed when:
 * a clean checkout can build the supported executable;
 * tests run from documented commands;
 * a supported local dataset or fixture can be processed;
+* the supported source is processed without loading the complete dataset into memory;
 * malformed records are handled predictably;
 * normalized events are replayed deterministically;
 * identical runs produce identical verified results;
@@ -840,7 +843,10 @@ The exact set should be selected based on verified needs.
 * measure focused components;
 * record units and sample counts;
 * identify actual bottlenecks;
-* compare changes against baselines.
+* compare changes against baselines;
+* compare buffered sequential file access with `mmap` when file I/O is a measured concern;
+* evaluate documented monotonic clocks, hardware performance counters, and serialized TSC timing where supported;
+* record timing resolution, ordering requirements, timer-read overhead, environment, and known limitations.
 
 Candidate benchmark targets include:
 
@@ -853,7 +859,9 @@ Candidate benchmark targets include:
 * order-state transitions;
 * execution simulation;
 * portfolio updates;
-* allocation behavior.
+* allocation behavior;
+* file-access strategy;
+* benchmark timing sources.
 
 ### Profiling deliverables
 
@@ -889,7 +897,9 @@ Concurrency may be evaluated only after:
 * representative workload measurements exist;
 * a specific bottleneck is identified;
 * ownership and shutdown rules are documented;
-* deterministic testing can be preserved.
+* deterministic testing can be preserved;
+* any proposed queue layout separates producer-owned and consumer-owned synchronization metadata to reduce false sharing;
+* the queue-layout verification approach is documented.
 
 Concurrency is not required for R6 completion.
 
@@ -955,6 +965,7 @@ Potential expansion areas include:
 * additional strategies;
 * more reporting formats;
 * improved benchmark suites;
+* one optional offline binary market-data adapter using permitted or project-generated data;
 * controlled concurrency experiments.
 
 These are not automatic requirements.
@@ -1229,6 +1240,7 @@ Required before R2 completion:
 * equal-timestamp behavior;
 * out-of-order-input policy;
 * malformed-record policy;
+* initial local file-access strategy;
 * simulation-clock behavior;
 * reset behavior.
 
@@ -1271,6 +1283,7 @@ Required before optimization:
 * measurement environment;
 * baseline result;
 * selected profiling method;
+* selected timing source and measurement methodology;
 * acceptable comparison procedure.
 
 ### Gate H — Concurrency
@@ -1280,6 +1293,9 @@ Required before multithreaded core processing:
 * measured bottleneck;
 * ownership model;
 * queue and backpressure model;
+* false-sharing-resistant queue-metadata layout;
+* destructive-interference boundary mechanism or documented fallback;
+* queue-layout verification approach;
 * shutdown model;
 * race-verification approach;
 * deterministic-test strategy;

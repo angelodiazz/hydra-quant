@@ -473,8 +473,10 @@ Initial sources are expected to be:
 Possible future sources include:
 
 * additional structured file formats;
-* recorded binary data;
-* network feeds.
+* one optional offline binary adapter using permitted or project-generated data;
+* future network feeds.
+
+A future binary source must remain an infrastructure adapter beneath the existing validation and normalization boundary. Source-format details must not enter replay, strategy, risk, order-management, execution, or portfolio logic.
 
 Network sources are **Not yet implemented** and are outside the initial architecture slice.
 
@@ -500,6 +502,8 @@ It should not:
 The ingestion component should:
 
 * read supported source records;
+* process records incrementally with bounded working memory;
+* avoid requiring complete source files to be loaded into memory;
 * identify record boundaries;
 * parse required fields;
 * preserve source context for diagnostics;
@@ -518,6 +522,14 @@ Ingestion should not:
 * update portfolio state;
 * silently substitute values for invalid required fields.
 
+#### File-access design considerations
+
+The initial local file-access strategy is **Under evaluation**.
+
+The current preferred direction is straightforward buffered sequential reading because it provides a simple, inspectable correctness baseline with bounded working memory.
+
+Memory-mapped file access through `mmap` may be compared later using representative datasets. It must not replace the simpler reader without measured evidence and a recorded decision.
+
 ### Validation and Normalization
 
 **Status: Planned**
@@ -534,6 +546,16 @@ Validation and normalization should:
 * apply documented sequence rules;
 * produce normalized internal market events;
 * reject invalid records before downstream state changes.
+
+#### Format-adapter rule
+
+The initial CSV parser and any future offline binary decoder are infrastructure adapters.
+
+Each adapter must pass data through the same validation and normalization boundary so that:
+
+* malformed external data is rejected consistently;
+* normalized domain events remain source-format independent;
+* replay and downstream components do not depend on CSV columns, binary layouts, packet formats, or transport details.
 
 #### Boundary rules
 
@@ -1023,6 +1045,21 @@ Benchmark results should identify:
 * measurement method;
 * known limitations.
 
+#### Timing-method boundary
+
+Benchmark code should either depend on a narrow benchmark-clock abstraction or use direct timing access whose complete methodology is documented.
+
+The selected timing source remains **Under evaluation**. Candidate approaches include:
+
+* a documented monotonic clock;
+* a disciplined benchmark framework;
+* hardware performance counters;
+* serialized TSC measurements where supported.
+
+Raw `__rdtsc()` must not be treated as a complete or automatically superior measurement method.
+
+Timing documentation must identify ordering requirements, timer-read overhead, reported resolution, virtualized or physical hardware, and known measurement limitations.
+
 ### Testing Infrastructure
 
 **Status: Planned**
@@ -1411,13 +1448,24 @@ A concurrency change must define:
 * synchronization primitives;
 * queue ownership;
 * queue capacity;
+* queue-metadata layout;
+* separation of producer-owned and consumer-owned synchronization state;
 * backpressure behavior;
 * shutdown sequence;
 * cancellation behavior;
 * error propagation;
 * deterministic-test strategy;
 * race-detection strategy;
+* layout-verification strategy;
 * measured performance benefit.
+
+### Future queue-layout requirement
+
+If a bounded concurrent queue is approved, producer-owned and consumer-owned atomic indices must occupy separate destructive-interference boundaries to reduce false sharing.
+
+The implementation should use `std::hardware_destructive_interference_size` where supported or a documented platform-specific fallback.
+
+The resulting layout must be verified through object-layout inspection, compile-time checks where practical, and a focused comparison benchmark where useful.
 
 ### Unapproved concurrency techniques
 

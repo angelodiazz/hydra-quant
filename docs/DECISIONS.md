@@ -1581,6 +1581,110 @@ The candidate diagram in [`ARCHITECTURE.md`](ARCHITECTURE.md) is not an accepted
 * **Question:** Would a separate interface provide enough portfolio or usability value to justify its cost?
 * **Current governing decision:** D-016 keeps command-line operation as the initial interface.
 
+### O-026 — Local File-Access Strategy
+
+* **Status:** Under evaluation
+* **Needed by:** R2 — Deterministic Data and Replay Slice
+* **Question:** Which local file-access strategy should the initial ingestion path use?
+* **Current direction:** Process records incrementally with bounded working memory using straightforward buffered sequential reads.
+* **Candidate directions:**
+
+  * standard buffered stream processing;
+  * explicitly chunked buffered processing;
+  * memory-mapped file access through `mmap` after measurement.
+
+* **Evaluation criteria:**
+
+  * correctness;
+  * bounded memory usage;
+  * deterministic parsing;
+  * diagnostic context;
+  * malformed-input behavior;
+  * testability;
+  * implementation complexity;
+  * portability within the supported Linux environment;
+  * measured performance using representative datasets.
+
+`mmap` is not approved as the initial strategy unless a later accepted decision establishes it.
+
+### O-027 — First Offline Binary Market-Data Adapter
+
+* **Status:** Deferred
+* **Needed by:** R7 selective expansion, after deterministic local simulation is stable
+* **Question:** Which offline binary market-data format, if any, should Hydra-Quant support first?
+* **Candidate directions:**
+
+  * a synthetic fixed-layout binary fixture;
+  * a permitted historical ITCH-style file;
+  * a small SBE schema created specifically for Hydra-Quant.
+
+* **Evaluation criteria:**
+
+  * legal and permitted data use;
+  * schema clarity;
+  * deterministic parsing;
+  * malformed-input testing;
+  * bounded-memory processing;
+  * reuse of the existing validation and normalization boundary;
+  * educational and portfolio value;
+  * implementation scope.
+
+Live multicast, packet recovery, and production exchange-feed connectivity are outside this decision.
+
+### O-028 — Concurrent Queue Layout and False-Sharing Protection
+
+* **Status:** Deferred
+* **Needed by:** Only after O-022 approves a concurrent queue requirement
+* **Question:** How should producer-owned and consumer-owned queue metadata be laid out?
+* **Required considerations:**
+
+  * separation of producer and consumer synchronization state;
+  * destructive-interference boundaries;
+  * `std::hardware_destructive_interference_size` support;
+  * documented platform-specific fallback behavior;
+  * object-layout verification;
+  * compile-time checks where practical;
+  * race verification;
+  * focused performance comparison where useful.
+
+* **Evaluation criteria:**
+
+  * correctness;
+  * portability;
+  * object size and alignment;
+  * memory-ordering compatibility;
+  * testability;
+  * measurable reduction of destructive interference.
+
+A hard-coded cache-line size is not approved as a universal project requirement.
+
+### O-029 — Benchmark Timing Source and Methodology
+
+* **Status:** Deferred until R6
+* **Needed by:** R6 — Reliability and Measured Performance
+* **Question:** Which timing source and methodology should Hydra-Quant use for focused latency benchmarks?
+* **Candidate directions:**
+
+  * a documented monotonic clock;
+  * timing provided by a disciplined benchmark framework;
+  * hardware performance counters;
+  * serialized TSC measurements where supported.
+
+* **Evaluation criteria:**
+
+  * resolution;
+  * ordering guarantees;
+  * timer-read overhead;
+  * compiler barriers;
+  * calibration requirements;
+  * CPU migration behavior;
+  * virtualized versus physical hardware;
+  * portability;
+  * reproducibility;
+  * clarity of reported results.
+
+Raw `__rdtsc()` calls are not approved as a complete benchmark methodology.
+
 ## Rejected or Currently Excluded Directions
 
 The following directions are not approved for current implementation.
