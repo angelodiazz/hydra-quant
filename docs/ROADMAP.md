@@ -561,7 +561,8 @@ By the end of R3, Angelo should be able to explain:
 R3 is completed when:
 
 * the R2 demonstration remains stable;
-* important defects have regression tesbuild and test instructions are reproducible;
+* important defects have regression tests;
+* build and test instructions are reproducible;
 * repository documentation is current;
 * the project has an interview-ready explanation;
 * résumé and LinkedIn claims match verified repository evidence;
@@ -712,7 +713,7 @@ Complete the first full deterministic simulated-trading vertical slice.
 
 * define one simple execution model;
 * process eligible simulated orders;
-* inspect a cond market view;
+* inspect a controlled market view;
 * produce explicit execution outcomes;
 * support deterministic behavior;
 * update order state through the order-management boundary.
@@ -852,7 +853,7 @@ Candidate benchmark targets include:
 * order-state transitions;
 * execution simulation;
 * portfolio updates;
-* allocati behavior.
+* allocation behavior.
 
 ### Profiling deliverables
 
@@ -994,7 +995,7 @@ Establish a professional repository and begin producing visible technical eviden
 
 ### Objective
 
-Produce the first recruiting-ready deterministic demotration.
+Produce the first recruiting-ready deterministic demonstration.
 
 ### Target evidence
 
@@ -1142,7 +1143,7 @@ governance and documentation
 * replay precedes strategy integration;
 * market-state views precede strategy dependence on market state;
 * risk validation precedes active order creation;
-* order lifecyclrules precede execution integration;
+* order lifecycle rules precede execution integration;
 * validated executions precede portfolio accounting;
 * correctness precedes performance optimization;
 * measurement precedes concurrency.
@@ -1288,7 +1289,7 @@ Required before multithreaded core processing:
 
 ### Core scope through the first recruiting milestone
 
-The first rene should contain:
+The first recruiting milestone should contain:
 
 * C++20 domain values;
 * local input;
@@ -1430,7 +1431,7 @@ These areas must not displace required correctness, testing, documentation, or r
 
 ### Risk 8 — Recruiting delay
 
-**Description:** The project remainsng Fall 2026 applications.
+**Description:** The project remains incomplete during Fall 2026 applications.
 
 **Mitigation:**
 
@@ -1503,24 +1504,21 @@ Long-term project-direction changes belong in [`BLUEPRINT.md`](BLUEPRINT.md).
 
 ## Immediate Next Actions
 
-After the shared documentation set is approved:
+Complete the remaining R0 actions in order:
 
-1. verify all six shared documents;
-2. verify cross-document links;
-3. inspect `git status`;
-4. inspect documentation diffs;
-5. build the current project;
-6. add the approved documentation;
-7. create an intentional documentation commit;
-8. push the trusted `main` branch;
-9. verify the GitHub repository;
-10. complete Claude Code installation and authentication;
-11. create and verify the Claude worktree and branch;
-12. create and review `CLAUDE.md`;
-13. confirm all R0 exit criteria;
-14. begin R1 planning.
+1. create and review `CLAUDE.md`;
+2. commit and push the approved Claude Code instructions;
+3. install and authenticate Claude Code inside the Ubuntu VM;
+4. configure Claude Code permissions and safety boundaries;
+5. create and verify the `hydra-claude` worktree and `agent/claude` branch;
+6. synchronize the Codex and Claude branches from the latest approved `main` commit;
+7. verify parallel-agent isolation;
+8. update [`CURRENT_STATUS.md`](CURRENT_STATUS.md);
+9. confirm all R0 exit criteria;
+10. mark R0 completed;
+11. begin R1 planning.
 
-The project should not begin broad subsystem implementation until the documentation foundation is complete and committed.
+Broad subsystem implementation must not begin until R0 is complete.
 
 ## Roadmap Maintenance
 

@@ -631,7 +631,7 @@ Market-state management should:
 * maintain the market state required by supported simulations;
 * enforce documented update rules;
 * expose controlled read-only views;
-* support deialization and reset.
+* support initialization and reset.
 
 An initial market-state model may include:
 

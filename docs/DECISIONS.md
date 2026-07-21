@@ -1170,7 +1170,7 @@ Correctness tests and performance benchmarks answer different questions.
 Combining them can create unstable test results and misleading pass-or-fail thresholds.
 
 #### Decision
-nd performance benchmarks must use separate targets, procedures, and success criteria.
+Correctness tests and performance benchmarks must use separate targets, procedures, and success criteria.
 
 #### Rationale
 

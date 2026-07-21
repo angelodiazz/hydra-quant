@@ -549,7 +549,7 @@ Executables and major runtime coordinators must have defined initialization, exe
 
 ### FR-3: Input validation
 
-Malformed, incompletsupported input must be rejected predictably.
+Malformed, incomplete, or unsupported input must be rejected predictably.
 
 ### FR-4: Typed domain data
 
@@ -986,7 +986,7 @@ This stage should produce the first recruiting-ready system slice.
 
 ### Stage 2 — Strategy-to-Execution Simulation Slice
 
-* **Period:** Fall 2026 thr027
+* **Period:** Fall 2026 through 2027
 * **Status:** Planned
 
 Primary outcomes:
