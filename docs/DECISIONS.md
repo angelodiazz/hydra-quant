@@ -559,7 +559,7 @@ This approach reduces:
 * leaks;
 * double deletion;
 * use-after-free behavior;
-* hiddership transfer;
+* hidden ownership transfer;
 * manual cleanup errors;
 * lifetime ambiguity.
 
@@ -753,7 +753,7 @@ Review this decision after:
 
 #### Context
 
-The repository contains a `tests/` directory but does not yet contain an auto framework.
+The repository contains a `tests/` directory but does not yet contain an automated test framework.
 
 Postponing testing would allow unverified behavior and architectural coupling to accumulate.
 
@@ -892,7 +892,7 @@ Vertical slices provide:
 
 The order of later vertical slices may change when:
 
-* architecture findings requirng;
+* architecture findings require resequencing;
 * recruiting needs change;
 * academic constraints change;
 * a dependency becomes blocked.
@@ -1285,7 +1285,8 @@ Potential options must be evaluated before approval.
   * dependency management;
   * IDE support;
   * sanitizer support;
-  * benchmark support;tallation complexity;
+  * benchmark support;
+  * installation complexity;
   * migration cost.
 
 ### O-003 — Third-Party Dependency Policy
@@ -1428,7 +1429,7 @@ CSV is not approved until this decision is accepted.
   * reset behavior;
   * test fixtures;
   * event-time semantics;
-  * separat time.
+  * separation from wall-clock time.
 
 ### O-012 — Strategy Interface Model
 
@@ -1697,7 +1698,8 @@ An accepted decision may require updates to:
 * [`BLUEPRINT.md`](BLUEPRINT.md);
 * [`ARCHITECTURE.md`](ARCHITECTURE.md);
 * [`ROADMAP.md`](ROADMAP.md);
-* [`CURRENT_STATUS.mdnce files when workflow rules change.
+* [`CURRENT_STATUS.md`](CURRENT_STATUS.md);
+* governance files when workflow rules change.
 
 ### Step 8: Implement and verify
 
