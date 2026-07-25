@@ -50,6 +50,35 @@ The `hydra-core` worktree is controlled by Angelo.
 
 Agents must work only in their assigned worktrees and branches.
 
+## Cursor Workspace Isolation
+
+Each worktree must be opened as its own Cursor workspace in a separate Cursor window.
+
+The intended setup is:
+
+| Cursor workspace | Branch | Enabled agent integration | Purpose |
+| ---------------- | ------ | ------------------------- | ------- |
+| `/home/angelo/projects/hydra-core` | `main` | None | Trusted review, builds, Git operations, and integration |
+| `/home/angelo/projects/hydra-codex` | `agent/codex` | Codex | Independent Codex implementation and review |
+| `/home/angelo/projects/hydra-claude` | `agent/claude` | Claude Code | Independent Claude Code implementation and review |
+
+Changing only the terminal's current directory is not sufficient.
+
+The Cursor workspace root determines:
+
+* which repository files appear in the Explorer;
+* which open files and selected lines are available to an IDE agent;
+* which workspace-specific extension settings apply;
+* which worktree the agent may interpret as its project context.
+
+Before using an agent side panel, verify:
+
+```bash
+pwd
+git branch --show-current
+git status --short
+```
+
 ## Main Branch Policy
 
 The `main` branch represents the approved version of Hydra-Quant.

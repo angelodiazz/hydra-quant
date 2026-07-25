@@ -8,8 +8,8 @@ Hydra-Quant is not presented as a profitable trading system. It is a systems-eng
 
 ## Current Status
 
-* **Project phase:** Foundation development
-* **Checkpoint:** July 20, 2026
+* **Project phase:** R0 foundation completed; R1 verification and domain foundation next
+* **Checkpoint:** July 25, 2026
 * **Primary language:** C++20
 * **Primary development environment:** Ubuntu Linux
 * **Repository:** `angelodiazz/hydra-quant`
@@ -23,11 +23,17 @@ The repository currently includes:
 * an initial `hydra::CoreEngine` scaffold;
 * repository governance and development-workflow documentation;
 * a trusted `main` worktree;
-* an isolated Codex worktree on a separate agent branch.
+* an isolated Codex worktree on `agent/codex`;
+* an isolated Claude Code worktree on `agent/claude`;
+* Codex-specific and Claude-specific operating instructions;
+* separate Cursor workspaces for trusted and agent-assisted development;
+* verified agent-worktree isolation.
 
-Claude Code installation, configuration, and worktree setup are not yet complete.
+R0 — Project and Documentation Foundation was completed on July 25, 2026.
 
-The major trading-platform subsystems are **not yet implemented**. Market-data ingestion, deterministic replay, strategy execution, risk management, order management, execution simulation, portfolio accounting, and performance benchmarking remain planned work.
+R1 — Verification and Domain Foundation is the next milestone and has not yet started.
+
+The major trading-platform subsystems are **not yet implemented**. Market-data ingestion, deterministic replay, strategy execution, risk management, order management, execution simulation, portfolio accounting, automated testing, and performance benchmarking remain future work.
 
 See [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md) for the authoritative project checkpoint.
 
@@ -111,7 +117,7 @@ The following table distinguishes the current implementation from planned platfo
 | Profiling and reproducible benchmarks      | Planned             |
 | Concurrency and thread-allocation model    | Under evaluation    |
 | Exchange or brokerage connectivity         | Not yet implemented |
-| Live trading                               | Not yet implemented |
+| Live trading                               | Not supported       |
 
 Initial development will use historical or generated input data with simulated orders, fills, positions, and capital. The current platform does not connect to a brokerage or place real orders.
 
@@ -167,12 +173,13 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the authoritative current
 ├── tests/                   Automated tests as they are introduced
 ├── docs/                    Shared project and engineering documentation
 ├── AGENTS.md                Repository-wide coding-agent governance
+├── CLAUDE.md                Claude Code-specific operating instructions
 ├── CODEX.md                 Codex-specific operating instructions
 ├── Makefile                 Current GNU Make build configuration
 └── README.md                Public repository entry point
 ```
 
-`CLAUDE.md` will be created separately as part of the Claude Code setup.
+Agent-specific instructions are maintained separately in `CODEX.md` and `CLAUDE.md`, while shared development rules remain in `AGENTS.md` and `docs/DEVELOPMENT.md`.
 
 The repository structure will evolve only when new components require clear and justified boundaries.
 
@@ -242,12 +249,13 @@ No test-coverage, latency, throughput, or scalability claims should be made unti
 
 Before Fall 2026 classes begin on August 17, 2026, development is concentrated on:
 
-* completing the shared documentation foundation;
-* strengthening the repository and build structure;
-* defining initial market-data value types;
-* implementing and testing a basic ingestion path;
-* handling malformed input predictably;
-* beginning deterministic replay;
+* beginning R1 planning;
+* evaluating and selecting an automated C++ test framework;
+* confirming the R1 dependency and build-system direction;
+* integrating the first automated tests;
+* defining and testing the first minimal domain values;
+* adding domain invariant tests;
+* beginning the deterministic-data slice after the R1 foundation is established;
 * maintaining reviewable Git history.
 
 ### Fall 2026: Recruiting Milestone
@@ -310,9 +318,11 @@ Hydra-Quant uses shared, agent-neutral documentation for project direction and a
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)       | Development, testing, review, and Git procedures                      |
 | [`AGENTS.md`](AGENTS.md)                           | Repository-wide coding-agent governance                               |
 | [`CODEX.md`](CODEX.md)                             | Codex-specific operating instructions                                 |
-| `CLAUDE.md`                                        | Planned Claude Code-specific instructions                             |
+| [`CLAUDE.md`](CLAUDE.md)                           | Claude Code-specific operating instructions                           |
 
-At the July 20, 2026 checkpoint, the shared blueprint, architecture, roadmap, decision log, and current-status documents are complete, committed, pushed, and available through the links above. Claude Code setup and `CLAUDE.md` remain pending.
+At the July 25, 2026 checkpoint, the shared documentation foundation, Codex environment, Claude Code environment, agent-specific governance, isolated worktrees, and parallel-agent workflow are established.
+
+R0 is complete. R1 is the next milestone.
 
 Repository governance files take precedence over abbreviated workflow descriptions in this README.
 
@@ -352,7 +362,7 @@ Hydra-Quant development follows these priorities:
 
 ## Current Limitations
 
-Hydra-Quant remains in an early foundation stage.
+Hydra-Quant remains in an early implementation stage following completion of the R0 foundation.
 
 Current limitations include:
 

@@ -1,8 +1,8 @@
-# Hydra-Quant Current Status — July 20, 2026
+# Hydra-Quant Current Status — July 25, 2026
 
 ## Document Purpose
 
-This document records the verified implementation and project-operations status of Hydra-Quant as of July 20, 2026.
+This document records the verified implementation and project-operations status of Hydra-Quant as of July 25, 2026.
 
 It identifies:
 
@@ -72,13 +72,15 @@ This document also uses the following operational labels:
 
 ## Checkpoint Summary
 
-* **Checkpoint date:** July 20, 2026
-* **Project phase:** Foundation development
-* **Roadmap milestone:** R0 — Project and Documentation Foundation
-* **R0 delivery status:** In progress
+* **Checkpoint date:** July 25, 2026
+* **Project phase:** Foundation completed; verification and domain foundation next
+* **Completed roadmap milestone:** R0 — Project and Documentation Foundation
+* **R0 delivery status:** Completed
+* **Next roadmap milestone:** R1 — Verification and Domain Foundation
+* **R1 delivery status:** Not started
 * **Primary language:** C++20
 * **Primary platform:** Ubuntu Linux
-* **Primary interaction model:** Command line
+* **Primary interaction model:** Command line and Cursor IDE
 * **Approved execution scope:** Local simulation and educational development
 * **Implemented simulation capability:** Not yet implemented
 * **Live-trading status:** Not supported
@@ -86,7 +88,7 @@ This document also uses the following operational labels:
 * **Secondary recruiting objective:** Summer 2027 backend-infrastructure internship
 * **Fall 2026 semester start:** August 17, 2026
 
-The project currently provides a minimal C++20 foundation and repository-development environment.
+The project currently provides a minimal C++20 foundation, a documented development workflow, and isolated Codex and Claude Code environments.
 
 It does not yet provide a functional market-data, trading, backtesting, risk, execution, or portfolio platform.
 
@@ -139,9 +141,14 @@ The currently established toolchain includes:
 * GitHub;
 * SSH;
 * Cursor;
-* Codex CLI.
+* Codex CLI;
+* Claude Code.
 
-Claude Code setup is not yet complete.
+Codex CLI and Claude Code are installed, authenticated, governed, and assigned to separate worktrees.
+
+Claude Code version `2.1.219` was installed through Anthropic's native Linux installer. It is authenticated through Angelo's Claude Pro account and configured to use `claude-sonnet-5` as the normal project model.
+
+The Claude Code Cursor extension is installed. Its project-local permission configuration is loaded from the Claude worktree, and its external Google Drive MCP connector is disabled.
 
 ## Repository Identity
 
@@ -192,6 +199,7 @@ The trusted repository currently includes the following established areas:
 ```text
 hydra-core/
 ├── AGENTS.md
+├── CLAUDE.md
 ├── CODEX.md
 ├── Makefile
 ├── README.md
@@ -425,9 +433,9 @@ Defines repository development and integration workflow.
 
 #### `CLAUDE.md`
 
-**Status: Not yet implemented**
+**Status: Complete and authoritative within its scope**
 
-Claude-specific governance will be created during Claude Code setup.
+Defines Claude Code-specific operating rules, assigned-worktree restrictions, Git restrictions, filesystem boundaries, network restrictions, verification requirements, and learning-first expectations.
 
 ### Shared platform documents
 
@@ -531,30 +539,70 @@ Codex output is not trusted implementation until reviewed and integrated.
 
 ### Claude Code
 
-### Installation
+### Installation and authentication
 
-**Status: Not yet completed**
+**Status: Complete**
 
-### Authentication and configuration
+Claude Code version `2.1.219` has been installed inside the Ubuntu environment through Anthropic's native Linux installer.
 
-**Status: Not yet completed**
+The installation was verified with:
+
+```bash
+which claude
+claude --version
+claude doctor
+```
+
+Claude Code is authenticated through Angelo's Claude Pro account.
+
+### Configuration
+
+**Status: Complete**
+
+The established Claude Code configuration includes:
+
+* the normal project model `claude-sonnet-5`;
+* project-local permission rules;
+* read-only Git inspection where explicitly allowed;
+* Git state-changing commands denied;
+* access to `hydra-core` and `hydra-codex` denied;
+* package-installation and unrestricted network commands denied;
+* web-search and web-fetch tools denied;
+* access to SSH and user-level Claude configuration denied;
+* the external Google Drive MCP connector disabled.
+
+The project-local permission file is:
+
+```text
+/home/angelo/projects/hydra-claude/.claude/settings.local.json
+```
+
+The file is valid JSON, excluded from Git, and applies only to the Claude worktree.
+
+Technical permission controls supplement human review. They do not make Claude-generated work trusted automatically.
 
 ### Worktree and branch
 
-**Status: Not yet completed**
+* **Worktree:** `/home/angelo/projects/hydra-claude`
+* **Branch:** `agent/claude`
+* **Status:** Complete
 
-Claude Code should eventually receive:
+The Claude Code Cursor extension is used from a separate Cursor workspace rooted at the Claude worktree.
 
-* a separate worktree;
-* a separate agent branch;
-* a `CLAUDE.md` governance file;
-* instructions consistent with shared repository governance.
+### Governance
 
-No Claude-generated project work should be described as part of the trusted implementation at this checkpoint.
+Claude Code must follow:
+
+* `AGENTS.md`;
+* `CLAUDE.md`;
+* `docs/DEVELOPMENT.md`;
+* accepted shared project documentation.
+
+Claude Code output is not trusted implementation until reviewed, understood, tested, approved, and intentionally integrated.
 
 ### Agent Comparison Workflow
 
-**Status: Partially implemented**
+**Status: Complete**
 
 The approved workflow is:
 
@@ -566,9 +614,42 @@ The approved workflow is:
 6. reject or revise unsuitable work;
 7. integrate only the approved result into `main`.
 
-Codex isolation is configured.
+Codex and Claude Code are configured in separate worktrees and branches.
 
-Claude isolation remains incomplete.
+Before this checkpoint update, the trusted, Codex, and Claude worktrees were verified clean and synchronized to approved baseline commit:
+
+```text
+78c3801
+```
+
+The verified worktree assignments are:
+
+```text
+/home/angelo/projects/hydra-core    main
+/home/angelo/projects/hydra-codex   agent/codex
+/home/angelo/projects/hydra-claude  agent/claude
+```
+
+The trusted and Claude worktrees were built successfully from the approved baseline.
+
+Separate Cursor windows were established for each worktree:
+
+```text
+hydra-core:
+  trusted review, verification, Git operations, and integration
+
+hydra-codex:
+  independent Codex implementation and review
+
+hydra-claude:
+  independent Claude Code implementation and review
+```
+
+The assigned agent integration is enabled only in its corresponding agent workspace.
+
+The trusted `hydra-core` workspace is not used for agent implementation.
+
+Angelo retains control of review, commits, pushes, merges, and integration into `main`.
 
 ## Platform Capability Matrix
 
@@ -581,7 +662,7 @@ Claude isolation remains incomplete.
 | Public GitHub repository       | Implemented             | `angelodiazz/hydra-quant`          |
 | Trusted `main` worktree        | Implemented             | `/home/angelo/projects/hydra-core` |
 | Codex worktree                 | Implemented             | `~/projects/hydra-codex`           |
-| Claude Code worktree           | Not yet implemented     | Setup incomplete                   |
+| Claude Code worktree           | Implemented	           | `~/projects/hydra-claude`          |
 | C++20 build                    | Implemented             | GNU Make and `g++`                 |
 | Warning-as-error build         | Implemented             | `-Wall -Wextra -Werror`            |
 | Command-line executable        | Implemented             | `main` diagnostic executable       |
@@ -651,7 +732,7 @@ input
 
 ### R0 — Project and Documentation Foundation
 
-**Delivery status: In progress**
+**Delivery status: Completed**
 
 ### Completed R0 work
 
@@ -666,57 +747,55 @@ input
 * initial executable created;
 * initial engine scaffold created;
 * trusted worktree established;
-* Codex worktree established;
+* Codex worktree and branch established;
+* Claude Code worktree and branch established;
+* Codex installed, authenticated, and configured;
+* Claude Code installed, authenticated, and configured;
 * Codex governance established;
+* Claude Code governance established;
 * shared agent governance established;
+* project-local Claude permission boundaries established;
+* external Claude Code MCP access disabled;
 * development workflow documented;
+* separate Cursor workspaces established;
+* Codex and Claude branches synchronized from the same approved baseline;
+* agent isolation verified;
+* trusted and Claude builds verified;
 * `README.md` completed;
 * `BLUEPRINT.md` completed;
 * `ARCHITECTURE.md` completed;
 * `ROADMAP.md` completed;
-* `DECISIONS.md` completed.
-* `CURRENT_STATUS.md` completed.
+* `DECISIONS.md` completed;
+* `CURRENT_STATUS.md` completed;
+* `AGENTS.md`, `CODEX.md`, `CLAUDE.md`, and `DEVELOPMENT.md` completed.
 
-### Remaining R0 work
+### R0 completion evidence
 
-* create and verify `CLAUDE.md`;
-* commit and push the Claude Code instructions;
-* install and authenticate Claude Code inside the Ubuntu VM;
-* configure Claude Code permissions and safety boundaries;
-* create the `hydra-claude` worktree on `agent/claude`;
-* synchronize the Codex and Claude branches from the latest approved `main` commit;
-* verify both agents remain isolated from `hydra-core` and from each other;
-* update `CURRENT_STATUS.md` after Claude setup is complete;
-* confirm all R0 exit criteria;
-* mark R0 completed.
+R0 exit criteria were satisfied because:
 
-### R0 completion condition
-
-R0 remains in progress until:
-
-* all six shared project documents exist;
-* document responsibilities do not overlap incorrectly;
-* implemented and planned functionality are clearly distinguished;
-* governance documents remain unchanged unless intentionally updated;
-* the documentation has been reviewed, committed, pushed, and verified;
+* the shared project-documentation set exists;
+* document responsibilities remain distinct;
+* implemented and planned functionality are clearly separated;
+* governance documents exist for shared, Codex, and Claude behavior;
 * the public repository accurately describes the project;
-* `CLAUDE.md` exists and has been reviewed;
 * Claude Code is installed, authenticated, and safely configured;
 * the Claude worktree and `agent/claude` branch exist;
-* the Codex and Claude branches begin from the same approved baseline;
-* agent isolation has been verified;
+* the Codex and Claude branches were synchronized from approved baseline `78c3801`;
+* agent isolation was verified;
 * the current project builds successfully;
-* the trusted worktree contains no unintended files.
+* the trusted worktree contained no unintended files.
 
 ### R1 — Verification and Domain Foundation
 
 **Delivery status: Not started**
 
-R1 has not begun.
+R1 is the next milestone.
 
 Its planned initial focus is:
 
 * automated test-framework selection;
+* dependency-policy evaluation;
+* continued Make usage or build-system evaluation;
 * automated test integration;
 * initial typed domain values;
 * domain invariant testing;
@@ -785,11 +864,13 @@ Hydra-Quant can receive concentrated development time until August 17, 2026.
 
 The immediate pre-semester priorities are:
 
-1. complete R0;
-2. begin R1;
-3. establish automated testing;
-4. introduce minimal domain values;
-5. begin the deterministic-data slice.
+1. begin R1 planning;
+2. evaluate and select an automated test framework;
+3. integrate the first automated tests;
+4. evaluate initial domain representations;
+5. introduce minimal typed domain values;
+6. add domain invariant tests;
+7. begin the deterministic-data slice after the R1 foundation is established.
 
 ### Fall 2026
 
@@ -880,11 +961,13 @@ The following limitations are verified and must remain visible.
 
 ### Workflow limitations
 
-* Claude Code setup is incomplete;
-* `CLAUDE.md` does not yet exist;
-* the Claude worktree and `agent/claude` branch have not yet been created;
-* the Codex branch must be synchronized with the latest approved `main` baseline;
-* parallel-agent isolation has not yet been verified with both agents configured.
+* agent output still requires human review and explicit integration;
+* permission rules reduce risk but do not guarantee perfect instruction compliance;
+* agent branches do not update automatically when `main` advances;
+* agent worktrees must be verified clean before synchronization;
+* agent branches must be synchronized from the same approved baseline before equivalent comparison tasks;
+* workspace-specific Cursor extension settings must remain correctly scoped;
+* only Angelo may approve commits, pushes, merges, and integration into `main`.
 
 ## Known Issues and Cleanup Items
 
@@ -920,113 +1003,108 @@ It may require extension or replacement when tests, multiple targets, dependenci
 
 The shared platform documentation has been reviewed, committed, pushed, and verified on GitHub.
 
-Future status changes must be recorded when Claude Code setup is completed, the agent worktrees are synchronized, or R1 begins.
+Claude Code setup, agent-worktree synchronization, Cursor workspace isolation, and R0 completion are recorded in this July 25, 2026 checkpoint.
+
+Future status changes must be recorded when R1 begins or verified implementation capability changes.
 
 ## Immediate Next Actions
 
-Perform the following remaining R0 actions in order.
+Begin R1 in the following order.
 
-### 1. Create and review Claude Code instructions
+### 1. Evaluate the automated C++ test framework
 
-Draft the initial `CLAUDE.md` using the established shared governance documents, agent restrictions, and parallel-agent architecture.
+Compare suitable test-framework options against:
 
-Review the file before adding it to the trusted repository.
+* C++20 compatibility;
+* warning-as-error compatibility;
+* integration effort;
+* dependency footprint;
+* failure-path testing;
+* maintainability;
+* recruiter-facing clarity.
 
-### 2. Commit and push `CLAUDE.md`
+Do not integrate a framework until the decision is reviewed and recorded appropriately.
 
-After review:
+### 2. Confirm the R1 dependency policy
 
-```bash
-git add CLAUDE.md
-git diff --cached
-git diff --cached --check
-git commit -m "docs: add Claude Code operating instructions"
-git push origin main
-```
+Determine whether the selected test framework will be:
 
-### 3. Install and authenticate Claude Code
+* vendored;
+* installed through the development environment;
+* fetched by the build;
+* provided through another approved dependency mechanism.
 
-Install Claude Code inside the Ubuntu VM and complete authentication using Angelo's approved account.
+The decision must preserve reproducibility and avoid unnecessary project complexity.
 
-Do not grant unnecessary permissions or enable unrestricted network or filesystem access.
+### 3. Confirm the R1 build-system direction
 
-### 4. Configure Claude Code safely
+Evaluate whether GNU Make can support:
 
-Configure Claude Code so that it:
+* a separate runtime target;
+* a separate test target;
+* reproducible test execution;
+* warning-as-error behavior;
+* future sanitizer targets.
 
-* works only inside its assigned worktree;
-* does not modify the trusted `hydra-core` worktree;
-* does not switch to or work directly on `main`;
-* does not install dependencies without approval;
-* does not perform Git governance operations without approval;
-* follows `AGENTS.md`, `CLAUDE.md`, and the shared project documentation.
+Do not migrate to CMake unless the current build system prevents clean R1 implementation or a migration is intentionally approved.
 
-### 5. Create the Claude worktree and branch
+### 4. Evaluate initial domain representations
 
-Create the isolated Claude worktree at:
+Evaluate the minimum representations required for:
 
-```text
-/home/angelo/projects/hydra-claude
-```
+* instrument identifiers;
+* prices;
+* quantities;
+* timestamps;
+* event types;
+* trade or quote sides.
 
-Use the dedicated branch:
+Record accepted decisions before broad implementation.
 
-```text
-agent/claude
-```
+### 5. Integrate the first automated tests
 
-### 6. Synchronize the agent branches
+Provide:
 
-Ensure the Codex and Claude branches both begin from the latest approved `main` commit before equivalent work is assigned.
+* a documented test command;
+* at least one passing behavior test;
+* at least one failure-path test;
+* separate test and runtime targets;
+* warning-clean compilation.
 
-### 7. Verify parallel-agent isolation
+### 6. Introduce minimal typed domain values
 
-Confirm that:
+Implement only the types required by the first deterministic data-processing slice.
 
-* Codex works only inside `hydra-codex`;
-* Claude works only inside `hydra-claude`;
-* neither agent modifies `hydra-core`;
-* neither agent works directly on `main`;
-* the agents cannot overwrite each other's worktrees;
-* Angelo retains control of review, commits, pushes, merges, and integration.
+### 7. Add invariant tests
+
+Verify that invalid or ambiguous domain values cannot silently enter trusted state.
 
 ### 8. Update project status
 
-Update `docs/CURRENT_STATUS.md` after Claude Code, the Claude worktree, branch synchronization, and agent isolation have been verified.
-
-Confirm every R0 exit criterion before marking R0 complete.
-
-### 9. Begin R1
-
-After R0 is complete, begin the first functional milestone with:
-
-* test-framework evaluation;
-* build-and-test integration;
-* initial domain-representation decisions;
-* minimal domain types;
-* invariant tests.
+Update `CURRENT_STATUS.md`, `DECISIONS.md`, `ROADMAP.md`, and the README only when verified R1 work materially changes their respective responsibilities.
 
 ## Checkpoint Completion Criteria
 
-This July 20, 2026 checkpoint is considered fully recorded because:
+This July 25, 2026 checkpoint is considered fully recorded because:
 
 * this file exists;
-* its facts match the trusted repository;
-* all six shared documents passed formatting and structural checks;
-* implemented and planned capabilities are clearly distinguished;
-* documentation links were verified;
-* the documentation change was committed;
-* the trusted `main` branch was pushed;
-* the public GitHub repository was verified.
+* its facts match the verified trusted repository and local worktree configuration;
+* the shared documentation passed prior structural review;
+* implemented and planned capabilities remain clearly distinguished;
+* `CLAUDE.md` exists and was reviewed, committed, and pushed;
+* Claude Code was installed and authenticated;
+* Claude Code permission boundaries were configured;
+* the Claude worktree and `agent/claude` branch were created;
+* the Codex and Claude branches were synchronized from approved baseline `78c3801`;
+* separate Cursor workspaces were established;
+* parallel-agent isolation was verified;
+* the trusted and Claude worktrees built successfully;
+* the trusted worktree remained clean;
+* R0 exit criteria were satisfied.
 
-R0 remains **In progress** until:
+R0 is **Completed**.
 
-* `CLAUDE.md` is created, reviewed, committed, and pushed;
-* Claude Code is installed, authenticated, and safely configured;
-* the `hydra-claude` worktree and `agent/claude` branch are created;
-* the Codex and Claude branches begin from the same approved `main` baseline;
-* parallel-agent isolation is verified;
-* the final R0 status update is completed.
+R1 remains **Not started** until its planning and first approved verification task begin.
 
 ## Status Update Rules
 
@@ -1080,5 +1158,5 @@ Changes to this document must not weaken or override governance established in:
 
 * [`../AGENTS.md`](../AGENTS.md);
 * [`../CODEX.md`](../CODEX.md);
+* [`../CLAUDE.md`](../CLAUDE.md);
 * [`DEVELOPMENT.md`](DEVELOPMENT.md);
-* `../CLAUDE.md` after that file is created.

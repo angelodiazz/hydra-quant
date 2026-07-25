@@ -77,15 +77,24 @@ Completion requires verified behavior, tests, documentation, and satisfied exit 
 
 ## Current Roadmap Position
 
-Hydra-Quant is currently in the project-foundation and documentation phase.
+R0 — Project and Documentation Foundation was completed on July 25, 2026.
 
 The trusted implementation remains a minimal C++20 command-line foundation.
 
 Major trading-platform functionality is **Not yet implemented**.
 
-The six-file shared documentation foundation is complete, committed, pushed, and verified on GitHub.
+The project now has:
 
-R0 remains in progress because Claude Code setup, `CLAUDE.md`, the Claude worktree, agent-branch synchronization, and final parallel-agent isolation verification remain incomplete.
+* a trusted `main` worktree;
+* an isolated Codex worktree on `agent/codex`;
+* an isolated Claude Code worktree on `agent/claude`;
+* shared and agent-specific governance;
+* safely configured agent environments;
+* separate Cursor workspaces;
+* a verified common agent baseline;
+* a working warning-as-error build.
+
+R1 — Verification and Domain Foundation is the next milestone and remains **Not started**.
 
 ## Roadmap Principles
 
@@ -187,7 +196,7 @@ Agent-generated work must not enter the trusted branch without:
 
 | Milestone                                           | Target window         | Delivery status | Primary outcome                                               |
 | --------------------------------------------------- | --------------------- | --------------: | ------------------------------------------------------------- |
-| R0 — Project and Documentation Foundation           | July 2026             |     In progress | Trusted project foundation and authoritative documentation    |
+| R0 — Project and Documentation Foundation           | July 2026             |       Completed | Trusted project foundation and authoritative documentation    |
 | R1 — Verification and Domain Foundation             | Late July–August 2026 |     Not started | Automated testing and initial typed domain values             |
 | R2 — Deterministic Data and Replay Slice            | August–October 2026   |     Not started | First recruiting-ready end-to-end deterministic demonstration |
 | R3 — Fall 2026 Stabilization and Recruiting Support | October–December 2026 |     Not started | Stable public milestone and interview-ready project narrative |
@@ -206,7 +215,7 @@ July 2026
 
 ### Delivery status
 
-**In progress**
+**Completed July 25, 2026**
 
 ### Objective
 
@@ -228,22 +237,32 @@ The current project foundation includes:
 * an initial `hydra::CoreEngine` scaffold;
 * a trusted `main` worktree;
 * an isolated Codex worktree and agent branch;
-* repository governance documentation.
+* repository governance documentation;
+* an isolated Claude Code worktree and agent branch;
+* Claude Code-specific governance;
+* synchronized Codex and Claude baselines;
+* verified parallel-agent isolation;
+* separate Cursor workspaces for trusted, Codex, and Claude work;
+* project-local Claude permission boundaries.
 
-### Remaining core deliverables
+### Completed core deliverables
 
-* create and verify `CLAUDE.md`;
-* commit and push the Claude Code instructions;
-* install and authenticate Claude Code inside the Ubuntu VM;
-* configure Claude Code permissions and safety boundaries;
-* create the `hydra-claude` worktree on `agent/claude`;
-* synchronize the Codex and Claude branches from the latest approved `main` commit;
-* verify both agents remain isolated from `hydra-core` and from each other;
-* update `CURRENT_STATUS.md` after Claude setup is complete;
-* confirm all R0 exit criteria;
-* mark R0 completed.
+* created and verified `CLAUDE.md`;
+* committed and pushed the Claude Code instructions;
+* installed and authenticated Claude Code inside the Ubuntu VM;
+* configured Claude Code permissions and safety boundaries;
+* created the `hydra-claude` worktree on `agent/claude`;
+* synchronized the Codex and Claude branches from approved baseline `78c3801`;
+* verified both agents remain isolated from `hydra-core` and from each other;
+* established separate Cursor workspaces;
+* verified the trusted and Claude builds;
+* updated the factual project checkpoint;
+* confirmed all R0 exit criteria;
+* marked R0 completed.
 
 ### Exit criteria
+
+**Status: Satisfied on July 25, 2026**
 
 R0 is completed when:
 
@@ -1067,11 +1086,13 @@ Hydra-Quant may receive concentrated development time.
 
 Recommended priorities:
 
-1. finish the documentation foundation;
-2. commit and push the approved documentation;
-3. establish automated testing;
-4. implement the first minimal domain values;
-5. begin the deterministic data slice.
+1. begin R1 planning;
+2. evaluate and select an automated C++ test framework;
+3. confirm the R1 dependency and build-system direction;
+4. integrate the first automated tests;
+5. implement the first minimal domain values;
+6. add domain invariant tests;
+7. begin the deterministic data slice after the R1 foundation is established.
 
 The goal is not to complete the entire platform before classes begin.
 
@@ -1520,21 +1541,22 @@ Long-term project-direction changes belong in [`BLUEPRINT.md`](BLUEPRINT.md).
 
 ## Immediate Next Actions
 
-Complete the remaining R0 actions in order:
+Begin R1 in order:
 
-1. create and review `CLAUDE.md`;
-2. commit and push the approved Claude Code instructions;
-3. install and authenticate Claude Code inside the Ubuntu VM;
-4. configure Claude Code permissions and safety boundaries;
-5. create and verify the `hydra-claude` worktree and `agent/claude` branch;
-6. synchronize the Codex and Claude branches from the latest approved `main` commit;
-7. verify parallel-agent isolation;
-8. update [`CURRENT_STATUS.md`](CURRENT_STATUS.md);
-9. confirm all R0 exit criteria;
-10. mark R0 completed;
-11. begin R1 planning.
+1. evaluate and select an automated C++ test framework;
+2. evaluate the R1 dependency policy;
+3. confirm whether GNU Make remains sufficient for R1;
+4. evaluate initial price, quantity, timestamp, instrument-identifier, and event-type representations;
+5. record accepted decisions in [`DECISIONS.md`](DECISIONS.md);
+6. integrate a separate automated test target;
+7. add a documented test command;
+8. add at least one passing test;
+9. add at least one failure-path test;
+10. introduce only the minimal typed domain values required by the first deterministic-data slice;
+11. add domain invariant tests;
+12. update [`CURRENT_STATUS.md`](CURRENT_STATUS.md) when verified R1 implementation begins.
 
-Broad subsystem implementation must not begin until R0 is complete.
+Broad trading-platform implementation must remain sequenced behind the R1 verification and domain foundation.
 
 ## Roadmap Maintenance
 
@@ -1546,5 +1568,5 @@ Changes to this roadmap must not weaken or override governance established in:
 
 * [`../AGENTS.md`](../AGENTS.md);
 * [`../CODEX.md`](../CODEX.md);
+* [`../CLAUDE.md`](../CLAUDE.md);
 * [`DEVELOPMENT.md`](DEVELOPMENT.md);
-* `../CLAUDE.md` after that file is created.
