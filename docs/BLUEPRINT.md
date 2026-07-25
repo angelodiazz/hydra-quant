@@ -36,21 +36,25 @@ A capability is not considered implemented unless the trusted repository and [`C
 
 ## Current Foundation
 
-As of July 20, 2026, Hydra-Quant is in foundation development.
+As of July 25, 2026, Hydra-Quant has completed R0 — Project and Documentation Foundation.
 
 The trusted project currently includes:
 
 * a C++20 project foundation;
 * a GNU Make build pipeline;
 * compilation with `-Wall`, `-Wextra`, and `-Werror`;
-* initial `src/`, `include/`, `tests/`, and `docs/` directories;
+* initial `src/`, `include/`, `tests/`, and `docs/` areas;
 * a minimal command-line runtime diagnostic;
 * an initial `hydra::CoreEngine` scaffold;
 * repository governance and development-workflow documentation;
 * a trusted `main` worktree;
-* an isolated Codex worktree and agent branch.
+* an isolated Codex worktree on `agent/codex`;
+* an isolated Claude Code worktree on `agent/claude`;
+* Codex-specific and Claude Code-specific governance;
+* separate Cursor workspaces for trusted and agent-assisted development;
+* a verified common agent baseline and parallel-agent isolation.
 
-Claude Code installation, configuration, and worktree setup are not yet complete.
+R1 — Verification and Domain Foundation is the next milestone and remains **Not started**.
 
 The major functional trading-platform subsystems described in this blueprint are **Not yet implemented**.
 

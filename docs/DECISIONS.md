@@ -1220,8 +1220,8 @@ The following governance files remain authoritative within their defined scope:
 
 * [`../AGENTS.md`](../AGENTS.md);
 * [`../CODEX.md`](../CODEX.md);
-* [`DEVELOPMENT.md`](DEVELOPMENT.md);
-* `../CLAUDE.md` after it is created.
+* [`../CLAUDE.md`](../CLAUDE.md);
+* [`DEVELOPMENT.md`](DEVELOPMENT.md).
 
 The README, blueprint, architecture, roadmap, decisions, and current-status documents must not override or weaken those files.
 
@@ -1240,7 +1240,7 @@ Separating governance from platform description prevents:
 * Governance changes must be intentional.
 * A platform document may reference governance but not replace it.
 * Conflicts must be resolved in favor of the applicable governance document until an intentional update is approved.
-* Claude-specific governance remains incomplete until `CLAUDE.md` is created.
+* Codex-specific and Claude Code-specific governance is established in the corresponding agent instruction files.
 
 #### Reconsideration Triggers
 

@@ -157,7 +157,7 @@ The Claude Code Cursor extension is installed. Its project-local permission conf
 * **Repository:** `angelodiazz/hydra-quant`
 * **Default trusted branch:** `main`
 
-The public repository exists and was verified after commit `dfd4cc3` was pushed to `origin/main`.
+The public repository exists, and the trusted `main` branch has been pushed successfully to `origin/main`.
 
 ### Trusted local worktree
 
@@ -467,7 +467,7 @@ Defines milestones R0 through R7, delivery sequencing, recruiting alignment, aca
 
 **Status: Complete and approved**
 
-Records 20 accepted decisions, 25 unresolved decision topics, excluded directions, and the decision-maintenance process.
+Records 20 accepted decisions, 29 unresolved decision topics, excluded directions, and the decision-maintenance process.
 
 #### `docs/CURRENT_STATUS.md`
 
@@ -662,7 +662,7 @@ Angelo retains control of review, commits, pushes, merges, and integration into 
 | Public GitHub repository       | Implemented             | `angelodiazz/hydra-quant`          |
 | Trusted `main` worktree        | Implemented             | `/home/angelo/projects/hydra-core` |
 | Codex worktree                 | Implemented             | `~/projects/hydra-codex`           |
-| Claude Code worktree           | Implemented	           | `~/projects/hydra-claude`          |
+| Claude Code worktree           | Implemented             | `~/projects/hydra-claude`          |
 | C++20 build                    | Implemented             | GNU Make and `g++`                 |
 | Warning-as-error build         | Implemented             | `-Wall -Wextra -Werror`            |
 | Command-line executable        | Implemented             | `main` diagnostic executable       |
