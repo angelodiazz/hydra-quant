@@ -1098,10 +1098,10 @@ Possible outcomes:
 * dispatch and queue evaluation;
 * concurrency experiments;
 * documented performance tradeoffs;
-* reproducible benchmark reports.
+* reproducible benchmark reports;
 * hot-path allocation and preallocation experiments;
 * CPU-affinity, thread-pinning, and scheduler-interference experiments;
-* physical-hardware benchmark repetition when virtualization materially affects the measurement;
+* physical-hardware benchmark repetition when virtualization materially affects the measurement.
 
 Optimization must follow correctness, representative workloads, and measurement.
 

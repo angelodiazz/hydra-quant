@@ -865,7 +865,7 @@ The exact set should be selected based on verified needs.
 * compare changes against baselines;
 * compare buffered sequential file access with `mmap` when file I/O is a measured concern;
 * evaluate documented monotonic clocks, hardware performance counters, and serialized TSC timing where supported;
-* record timing resolution, ordering requirements, timer-read overhead, environment, and known limitations.
+* record timing resolution, ordering requirements, timer-read overhead, environment, and known limitations;
 * evaluate hot-path allocation behavior and preallocation strategies where allocation is measured as relevant;
 * evaluate CPU affinity, thread pinning, and scheduler interference only after a correct concurrent baseline exists;
 * repeat timing-sensitive conclusions on physical hardware when VM scheduling or virtualization materially limits the evidence;
@@ -884,7 +884,7 @@ Candidate benchmark targets include:
 * portfolio updates;
 * allocation behavior;
 * file-access strategy;
-* benchmark timing sources.
+* benchmark timing sources;
 * hot-path allocation and preallocation;
 * thread placement and scheduler interference;
 * transport overhead for any approved network experiment;
@@ -993,7 +993,7 @@ Potential expansion areas include:
 * more reporting formats;
 * improved benchmark suites;
 * one optional offline binary market-data adapter using permitted or project-generated data;
-* controlled concurrency experiments.
+* controlled concurrency experiments;
 * CPU-affinity, thread-pinning, and isolated-core experiments;
 * TCP and UDP socket experiments;
 * a local or synthetic UDP multicast market-data source;
