@@ -176,6 +176,7 @@ Decision identifiers must not be reused.
 | D-018 | Keep configuration and external effects outside core domain rules          | Accepted | July 18, 2026 |
 | D-019 | Keep correctness tests separate from performance benchmarks                | Accepted | July 18, 2026 |
 | D-020 | Do not allow project documentation to override repository governance       | Accepted | July 18, 2026 |
+| D-021 | Defer advanced low-latency and hardware specialization until core stability | Accepted | September 21, 2026 |
 
 ## Accepted Decisions
 
@@ -1246,6 +1247,72 @@ Separating governance from platform description prevents:
 
 Review this decision if the repository reorganizes governance into a different authoritative structure.
 
+### D-021 — Defer Advanced Low-Latency and Hardware Specialization Until Core Stability
+
+* **Status:** Accepted
+* **Recorded:** September 21, 2026
+* **Scope:** Advanced networking, low-latency specialization, and hardware acceleration
+* **Supersedes:** None
+* **Superseded by:** None
+
+#### Context
+
+Hydra-Quant may eventually explore low-latency software topics relevant to trading-infrastructure engineering, including network transport, protocol handling, thread placement, hardware timing, kernel bypass, and hardware acceleration.
+
+These topics can provide educational and recruiting value, but they also introduce substantial complexity, environment dependence, and specialized hardware requirements.
+
+The project’s primary architecture remains a deterministic C++ simulation platform with explicit subsystem boundaries, reproducible behavior, automated verification, risk controls, order lifecycle management, execution simulation, and portfolio accounting.
+
+#### Decision
+
+Advanced low-latency software and hardware specialization are not required for completion of the core Hydra-Quant platform.
+
+They may be evaluated only after the deterministic software core, automated verification, representative workloads, and baseline performance evidence are stable.
+
+Optional later work may include:
+
+* CPU affinity, thread pinning, and scheduler-interference experiments;
+* TCP and UDP networking;
+* local or synthetic UDP multicast;
+* deeper ITCH-style market-data work;
+* OUCH-style or project-owned order-entry adapters;
+* NIC, RSS, interrupt-affinity, and hardware-timestamping experiments;
+* PTP and clock-synchronization concepts;
+* kernel-bypass technologies such as DPDK or Solarflare/Xilinx EF_VI;
+* more advanced in-memory order-book experiments;
+* queue-position modeling;
+* simulated multi-venue routing.
+
+Any such work must preserve existing domain and normalization boundaries.
+
+Production exchange connectivity, co-location, production kernel bypass, specialized NIC deployment, and nanosecond-level performance claims are not required project outcomes.
+
+FPGA/RTL development, static timing analysis, clock-domain-crossing implementation, and board-level FPGA work are outside the required roadmap unless a later accepted decision changes the project or career direction toward hardware-focused trading roles.
+
+#### Rationale
+
+This preserves focus on correctness, determinism, testability, and a complete software trading-system architecture before introducing specialized low-latency complexity.
+
+It also prevents infrastructure-specific concerns from leaking into domain behavior or forcing the core platform to depend on hardware that is not available in the primary development environment.
+
+#### Consequences
+
+* The current milestone sequence remains unchanged.
+* Networking and hardware specialization must not delay deterministic replay, risk, order management, execution, portfolio, testing, or recruiting milestones.
+* Low-latency experiments require explicit evidence and documented environments.
+* Hardware-dependent conclusions should be validated on suitable physical hardware.
+* Future networking and hardware work should extend established interfaces rather than replace the deterministic software core.
+* This decision does not claim that any advanced low-latency feature is implemented.
+
+#### Reconsideration Triggers
+
+Review this decision if:
+
+* the deterministic software platform is stable and measured;
+* a specific low-latency specialization provides clear educational or recruiting value;
+* suitable physical hardware becomes available;
+* the project’s target roles shift materially toward FPGA or hardware-focused trading infrastructure.
+
 ## Open Decision Queue
 
 The following items are unresolved.
@@ -1567,12 +1634,39 @@ The candidate diagram in [`ARCHITECTURE.md`](ARCHITECTURE.md) is not an accepted
 * **Needed by:** Only after allocation profiling
 * **Question:** Do arenas, pools, custom allocators, or other specialized techniques provide verified value?
 * **Current direction:** Use standard ownership and allocation mechanisms.
+* **Additional current direction:** Avoid uncontrolled allocation inside measured latency-sensitive paths when those paths exist. Prefer pre-sizing, reservation, fixed-capacity structures, and explicit lifetime management before introducing custom allocation systems.
+* **Candidate techniques if later justified:**
+
+  * reserved standard containers;
+  * fixed-capacity structures;
+  * arenas;
+  * pools;
+  * `std::pmr` resources;
+  * project-specific allocators.
+
+Zero heap fragmentation is not a universal requirement. Any specialized allocator must be justified by profiling, deterministic-capacity requirements, or measured allocation behavior.
 
 ### O-024 — Network Market-Data Support
 
 * **Status:** Deferred
 * **Needed by:** No current milestone
 * **Question:** Should network-based market data be introduced after deterministic local replay is mature?
+* **Current direction:** Any first network experiment should preserve the validation and normalization boundary used by local and offline binary sources.
+* **Candidate initial experiments:**
+
+  * ordinary TCP sockets;
+  * ordinary UDP sockets;
+  * a local or synthetic UDP multicast source.
+
+* **Not prerequisites for the first experiment:**
+
+  * kernel bypass;
+  * specialized NIC hardware;
+  * hardware timestamping;
+  * production exchange connectivity;
+  * packet-recovery infrastructure.
+
+Production-grade exchange feeds remain outside the current milestone requirements.
 
 ### O-025 — Graphical or Web Interface
 
@@ -1684,6 +1778,89 @@ A hard-coded cache-line size is not approved as a universal project requirement.
   * clarity of reported results.
 
 Raw `__rdtsc()` calls are not approved as a complete benchmark methodology.
+
+### O-030 — Thread Placement and CPU-Affinity Strategy
+
+* **Status:** Deferred
+* **Needed by:** Only after a correct concurrent implementation and benchmark baseline exist
+* **Question:** Should Hydra-Quant use CPU affinity, thread pinning, scheduler isolation, or isolated-core techniques for measured latency-sensitive workloads?
+* **Required evidence before evaluation:**
+
+  * approved concurrent architecture;
+  * representative workload;
+  * reproducible benchmark baseline;
+  * documented CPU topology;
+  * documented scheduling environment;
+  * physical-hardware measurements when virtualization materially limits conclusions.
+
+Thread placement must not be required for functional correctness.
+
+### O-031 — Advanced Network and NIC Optimization Strategy
+
+* **Status:** Deferred
+* **Needed by:** Only after an ordinary network transport experiment demonstrates a measured need
+* **Question:** Should Hydra-Quant evaluate NIC tuning, RSS, interrupt affinity, hardware timestamping, PTP integration, or kernel-bypass networking?
+* **Candidate areas:**
+
+  * NIC queue configuration;
+  * RSS;
+  * interrupt affinity;
+  * hardware timestamps;
+  * PTP integration;
+  * DPDK;
+  * Solarflare/Xilinx EF_VI.
+
+These techniques are not prerequisites for basic TCP, UDP, or synthetic multicast experiments.
+
+### O-032 — Order-Entry Protocol Adapter Scope
+
+* **Status:** Deferred
+* **Needed by:** Optional low-latency specialization after order management and execution simulation are stable
+* **Question:** Should Hydra-Quant implement an OUCH-style or project-owned order-entry adapter?
+* **Required architectural constraint:** Order-entry protocol handling must remain separate from market-data handling and must not bypass pre-trade risk or internal order-state ownership.
+* **Candidate directions:**
+
+  * a small project-owned binary order-entry protocol;
+  * a permitted OUCH-style educational adapter;
+  * simulator-only protocol fixtures.
+
+### O-033 — Advanced Order-Book and Queue-Position Scope
+
+* **Status:** Deferred
+* **Needed by:** Optional specialization after deterministic market-state and execution behavior are stable
+* **Question:** Should Hydra-Quant add deeper in-memory order-book structures or deterministic queue-position modeling?
+* **Evaluation criteria:**
+
+  * deterministic behavior;
+  * testability;
+  * architectural value;
+  * measured performance relevance;
+  * educational and recruiting value;
+  * implementation scope.
+
+### O-034 — Simulated Multi-Venue Routing Scope
+
+* **Status:** Deferred
+* **Needed by:** Only after the core execution simulator is stable
+* **Question:** Should Hydra-Quant implement a small simulated smart-order-routing or multi-venue routing experiment?
+* **Constraint:** This must remain simulation-only unless a separate accepted decision changes the live-execution boundary.
+
+### O-035 — FPGA or Hardware-Acceleration Specialization
+
+* **Status:** Deferred
+* **Needed by:** Only if project or career direction shifts toward hardware-focused trading roles
+* **Question:** Should Hydra-Quant later add an FPGA or other hardware-acceleration companion project?
+* **Current direction:** FPGA/RTL work is not required for Hydra-Quant completion.
+* **Potential future areas:**
+
+  * packet parsing;
+  * feed handling;
+  * order-book processing;
+  * risk checks;
+  * order-entry encoding;
+  * host-to-device interface design.
+
+Any future hardware work should preserve established software boundaries and must not make the deterministic C++ core hardware-specific.
 
 ## Rejected or Currently Excluded Directions
 

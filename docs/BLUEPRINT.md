@@ -766,6 +766,21 @@ Hydra-Quant should favor simple and visible lifetime structures.
 
 Memory pools and specialized allocation strategies are **Under evaluation**. Placeholder diagnostic output must not be treated as evidence that they exist.
 
+### Hot-Path Allocation Discipline
+
+Hydra-Quant should avoid uncontrolled dynamic allocation inside measured latency-sensitive paths once those paths exist.
+
+Prefer:
+
+* pre-sized or reserved storage;
+* fixed-capacity structures where appropriate;
+* explicit lifetime management;
+* standard-library facilities before custom allocation systems.
+
+Custom arenas, pools, and `std::pmr` resources should be introduced only when profiling, deterministic-capacity requirements, or measured allocation behavior justify them.
+
+Zero heap fragmentation is not a universal project requirement. The objective is predictable and measurable allocation behavior in latency-sensitive paths.
+
 ## Concurrency Philosophy
 
 The concurrency model is **Under evaluation**.
@@ -798,6 +813,24 @@ These boundaries are **Proposed**.
 Thread count, queue design, CPU affinity, scheduling, lock-free structures, and memory-ordering policy remain unresolved.
 
 For a future concurrent queue, `std::hardware_destructive_interference_size` should be used where supported, or the implementation must provide a documented platform-specific fallback. The exact queue layout remains **Under evaluation**.
+
+### Thread Placement
+
+CPU affinity, thread pinning, scheduler isolation, and related Linux thread-placement techniques are later optimization experiments.
+
+They are not prerequisites for the first concurrent pipeline.
+
+The project should first establish:
+
+* correct concurrent behavior;
+* explicit ownership;
+* deterministic verification where applicable;
+* a representative workload;
+* a reproducible benchmark baseline.
+
+Only after those conditions are satisfied should Hydra-Quant evaluate CPU placement or scheduler-isolation techniques.
+
+Final low-latency conclusions involving thread placement should be repeated on physical hardware when virtual-machine scheduling materially limits the evidence.
 
 ## Error-Handling Philosophy
 
@@ -1066,8 +1099,42 @@ Possible outcomes:
 * concurrency experiments;
 * documented performance tradeoffs;
 * reproducible benchmark reports.
+* hot-path allocation and preallocation experiments;
+* CPU-affinity, thread-pinning, and scheduler-interference experiments;
+* physical-hardware benchmark repetition when virtualization materially affects the measurement;
 
 Optimization must follow correctness, representative workloads, and measurement.
+
+### Optional Ultra-Low-Latency Software Expansion
+
+* **Period:** After the deterministic software core and baseline performance work are stable
+* **Status:** Proposed
+
+Hydra-Quant may selectively explore additional low-latency software topics relevant to trading-infrastructure engineering.
+
+These are optional specialization areas. They must not displace deterministic replay, verification, risk management, order lifecycle work, execution simulation, portfolio accounting, or academic priorities.
+
+Candidate work may include:
+
+* TCP and UDP socket experiments;
+* a local or synthetic UDP multicast market-data source;
+* deeper offline ITCH-style market-data decoding and protocol benchmarking;
+* an OUCH-style or project-owned order-entry adapter kept separate from market-data handling;
+* CPU affinity and isolated-core experiments;
+* NIC, RSS, interrupt-affinity, and hardware-timestamping concepts where suitable hardware is available;
+* PTP and clock-synchronization concepts at the software integration boundary;
+* kernel-bypass technologies such as DPDK or Solarflare/Xilinx EF_VI as study topics or tightly scoped experiments;
+* more detailed in-memory order-book experiments;
+* queue-position modeling where deterministic simulation can be preserved;
+* a small simulated multi-venue routing experiment if the core execution system is already stable.
+
+Any future transport or protocol implementation must preserve the existing validation and normalization boundary so that replay, market state, strategy, risk, order management, execution, and portfolio logic remain independent of external packet formats and transport mechanisms.
+
+Production exchange connectivity, co-location, specialized NIC deployment, production kernel bypass, and nanosecond-level timing claims are not required to complete Hydra-Quant.
+
+FPGA/RTL design, static timing analysis, clock-domain-crossing work, and board-level FPGA development are outside the required Hydra-Quant roadmap unless the project or career direction explicitly shifts toward hardware-focused trading roles.
+
+If hardware specialization is pursued later, it should extend the established software interfaces rather than force the deterministic C++ core to become hardware-specific.
 
 ### Stage 5 — Integration and Portfolio Completion
 

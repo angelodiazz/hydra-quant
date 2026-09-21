@@ -866,6 +866,10 @@ The exact set should be selected based on verified needs.
 * compare buffered sequential file access with `mmap` when file I/O is a measured concern;
 * evaluate documented monotonic clocks, hardware performance counters, and serialized TSC timing where supported;
 * record timing resolution, ordering requirements, timer-read overhead, environment, and known limitations.
+* evaluate hot-path allocation behavior and preallocation strategies where allocation is measured as relevant;
+* evaluate CPU affinity, thread pinning, and scheduler interference only after a correct concurrent baseline exists;
+* repeat timing-sensitive conclusions on physical hardware when VM scheduling or virtualization materially limits the evidence;
+* evaluate network-transport baselines only after the deterministic software core is stable.
 
 Candidate benchmark targets include:
 
@@ -881,6 +885,10 @@ Candidate benchmark targets include:
 * allocation behavior;
 * file-access strategy;
 * benchmark timing sources.
+* hot-path allocation and preallocation;
+* thread placement and scheduler interference;
+* transport overhead for any approved network experiment;
+* physical-hardware versus virtualized measurements where useful.
 
 ### Profiling deliverables
 
@@ -986,8 +994,27 @@ Potential expansion areas include:
 * improved benchmark suites;
 * one optional offline binary market-data adapter using permitted or project-generated data;
 * controlled concurrency experiments.
+* CPU-affinity, thread-pinning, and isolated-core experiments;
+* TCP and UDP socket experiments;
+* a local or synthetic UDP multicast market-data source;
+* deeper offline ITCH-style market-data decoding and protocol benchmarking;
+* an OUCH-style or project-owned order-entry adapter kept separate from market-data handling;
+* NIC, RSS, interrupt-affinity, and hardware-timestamping concepts where appropriate hardware is available;
+* PTP and clock-synchronization concepts at the software integration boundary;
+* tightly scoped kernel-bypass experiments using technologies such as DPDK or Solarflare/Xilinx EF_VI where compatible hardware is available;
+* more detailed in-memory order-book experiments;
+* queue-position modeling where deterministic simulation can be preserved;
+* a small simulated multi-venue routing experiment if the execution system is already stable.
 
 These are not automatic requirements.
+
+Advanced low-latency software work may begin only after the deterministic core, risk path, order lifecycle, execution simulation, portfolio accounting, and baseline performance evidence are stable.
+
+These experiments must preserve the validation and normalization boundary so downstream trading logic remains independent of transport and protocol details.
+
+Production exchange connectivity, co-location, production kernel bypass, specialized NIC deployment, and nanosecond-level performance claims are not required for Hydra-Quant completion.
+
+FPGA/RTL design, static timing analysis, clock-domain-crossing work, and board-level FPGA development are outside the required Hydra-Quant roadmap unless the project or career direction later shifts toward hardware-focused trading roles.
 
 ### Exit criteria
 
@@ -1376,7 +1403,22 @@ The following are **Deferred**, **Proposed**, or **Under evaluation** unless lat
 * machine-learning strategies;
 * strategy profitability research;
 * cloud deployment;
-* multi-user support.
+* multi-user support;
+* live UDP multicast exchange feeds;
+* production exchange connectivity;
+* kernel-bypass networking;
+* DPDK or EF_VI integration;
+* NIC and RSS tuning;
+* interrupt-affinity tuning;
+* PTP or GPS-backed clock deployment;
+* hardware timestamping;
+* advanced ITCH-style protocol work;
+* OUCH-style order-entry integration;
+* smart order routing;
+* FPGA or RTL development;
+* static timing analysis;
+* clock-domain-crossing implementation;
+* board-level FPGA debugging.
 
 These areas must not displace required correctness, testing, documentation, or recruiting milestones.
 

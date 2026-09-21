@@ -237,6 +237,56 @@ It does not prescribe:
 * a specific dispatch mechanism;
 * a final public API.
 
+### Future Transport and Protocol Boundaries
+
+**Status: Proposed**
+
+Future low-latency transport or protocol work must remain outside the core trading-domain logic.
+
+The conceptual inbound market-data path is:
+
+```text
+External or Synthetic Source
+    -> Transport Adapter
+    -> Protocol Decoder
+    -> Validation and Normalization
+    -> Normalized Market Events
+    -> Deterministic Replay / Market State
+```
+
+Possible future transport adapters may include:
+
+* ordinary TCP or UDP sockets;
+* a local or synthetic UDP multicast source;
+* specialized userspace networking where later justified.
+
+Possible future protocol decoders may include:
+
+* an offline ITCH-style market-data decoder;
+* project-owned binary formats;
+* other permitted formats selected for focused study.
+
+Transport and protocol details must terminate at the validation and normalization boundary. Replay, market state, strategy, risk, order management, execution, and portfolio accounting must not depend directly on packet layouts, socket APIs, NIC configuration, or exchange-specific wire formats.
+
+The conceptual outbound order-entry path is separate:
+
+```text
+Strategy
+    -> Pre-Trade Risk
+    -> Order Management
+    -> Order-Entry Adapter / Encoder
+    -> Transport Adapter
+    -> External Venue or Simulator
+```
+
+Acknowledgments, rejections, fills, and cancellation responses must return through a decoding boundary before they update order-management or portfolio state.
+
+An ITCH-style market-data adapter and an OUCH-style order-entry adapter therefore represent different responsibilities and must not be modeled as one generic feed component.
+
+Kernel-bypass technologies such as DPDK or Solarflare/Xilinx EF_VI belong to the infrastructure and transport boundary. They must not alter core domain interfaces merely to expose transport-specific behavior.
+
+FPGA or other hardware-acceleration work is not part of the currently planned architecture. If pursued later, hardware components should adapt to established market-data and order-entry boundaries rather than make the deterministic C++ core hardware-specific.
+
 ## Architectural Layers
 
 ### Domain layer
@@ -479,6 +529,12 @@ Possible future sources include:
 A future binary source must remain an infrastructure adapter beneath the existing validation and normalization boundary. Source-format details must not enter replay, strategy, risk, order-management, execution, or portfolio logic.
 
 Network sources are **Not yet implemented** and are outside the initial architecture slice.
+
+Future network-source experiments may evaluate ordinary TCP or UDP sockets and a local or synthetic UDP multicast source.
+
+Advanced NIC configuration, kernel bypass, hardware timestamping, or production exchange connectivity must not be prerequisites for the first network-source experiment.
+
+Regardless of transport, external data must pass through the same validation and normalization boundary used by file-based sources.
 
 #### Boundary rules
 
@@ -827,6 +883,29 @@ Order management owns order state but should not:
 * select execution prices;
 * calculate portfolio profit and loss;
 * parse market-data records.
+
+#### Future order-entry adapter boundary
+
+**Status: Proposed**
+
+If Hydra-Quant later experiments with external or protocol-oriented order entry, order management should remain the owner of internal order lifecycle state.
+
+A future order-entry adapter may:
+
+* encode approved internal orders into an external or project-owned wire representation;
+* send new, cancel, or replace requests through a transport adapter;
+* decode acknowledgments, rejections, fills, and cancellation responses;
+* convert external responses into typed internal events.
+
+The adapter must not:
+
+* generate strategy decisions;
+* bypass pre-trade risk;
+* become the authoritative owner of internal order state;
+* update portfolio state directly;
+* expose protocol-specific packet structures to strategy or risk components.
+
+An OUCH-style adapter, if explored, belongs at this boundary and remains separate from market-data handling.
 
 ### Execution Simulation
 
@@ -1482,6 +1561,22 @@ The architecture must not assume that the following are required or beneficial:
 
 These remain **Under evaluation**.
 
+### Future thread-placement experiments
+
+CPU affinity, thread pinning, scheduler isolation, and isolated-core techniques may be evaluated only after a correct concurrent implementation and reproducible benchmark baseline exist.
+
+Thread placement is an execution and deployment concern. Core domain components must not require a particular CPU assignment for correctness.
+
+Measurements involving CPU placement should document:
+
+* processor and core topology;
+* affinity configuration;
+* operating-system and scheduler conditions;
+* benchmark workload;
+* VM versus physical-hardware environment.
+
+When virtualization materially affects scheduling or timing, final low-latency conclusions should be repeated on physical hardware.
+
 ## Error-Handling Architecture
 
 ### Current status
@@ -1994,6 +2089,25 @@ They must not be treated as approved until recorded in [`DECISIONS.md`](DECISION
 * regression methodology;
 * allocator strategy;
 * acceptable environmental variance.
+
+### External transport and protocol expansion
+
+* first network transport experiment;
+* TCP versus UDP experiment scope;
+* synthetic multicast scope;
+* ITCH-style decoder scope;
+* OUCH-style or project-owned order-entry adapter scope;
+* network error and packet-loss simulation;
+* NIC and RSS experiment scope;
+* interrupt-affinity strategy;
+* hardware-timestamp integration;
+* PTP integration boundary;
+* kernel-bypass evaluation criteria;
+* DPDK or EF_VI experiment scope;
+* advanced order-book representation;
+* queue-position modeling;
+* simulated multi-venue routing scope;
+* conditions that would justify FPGA or other hardware-acceleration work.
 
 ## Architecture Acceptance Checklist
 
